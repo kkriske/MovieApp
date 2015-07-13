@@ -1,0 +1,16 @@
+.scroll-pane, .scroll-pane > * {
+   -fx-background-color: transparent;
+}
+
+.copytask{
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}
+
+.icon{
+    -fx-background-radius:15;
+}
+
+.icon:hover{
+    -fx-background-color: #aaa;
+}

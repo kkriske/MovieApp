@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="170.0" styleClass="hover" type="StackPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="170.0">
+            <children>
+                <StackPane AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                    <children>
+                        <Label alignment="CENTER" ellipsisString="" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="No info available" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" />
+                        <ImageView fx:id="img" fitHeight="240.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
+                    </children>
+                </StackPane>
+                <Label fx:id="text" alignment="CENTER" ellipsisString="" prefHeight="40.0" text="Label" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            </children>
+        </AnchorPane>
+        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="170.0">
+            <contextMenu>
+                <ContextMenu fx:id="contextmenu">
+                    <items>
+                        <MenuItem fx:id="playbutton" mnemonicParsing="false" text="play movie" />
+                        <MenuItem fx:id="vlctestplaybutton" mnemonicParsing="false" text="vlc play test" />
+                        <MenuItem fx:id="infobutton" mnemonicParsing="false" text="show info" />
+                        <MenuItem fx:id="openbutton" mnemonicParsing="false" text="open directory" />                        
+                        <Menu fx:id="copymenu" mnemonicParsing="false" text="copy to external drive">
+                            <items>
+                                <MenuItem fx:id="dummy" mnemonicParsing="false" text="no devices found" />
+                            </items>
+                        </Menu>
+                        
+                        <SeparatorMenuItem />
+                        <CustomMenuItem fx:id="imdbbutton" hideOnClick="false" mnemonicParsing="false" text="IMDb">
+                            <content>
+                                <TextField fx:id="imdb" alignment="CENTER" prefWidth="70.0" promptText="tt0000000" />
+                            </content>
+                        </CustomMenuItem>
+                        
+                        <MenuItem fx:id="resetbutton" mnemonicParsing="false" text="reset IMDb" />
+
+
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </Label>
+    </children>
+</fx:root>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root fx:id="rootanchor" pickOnBounds="false" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane styleClass="blurred" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ImageView fx:id="close" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="hover" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                    <image>
+                        <Image url="@close.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+        <HBox focusTraversable="true" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane fx:id="imganchor" focusTraversable="true" pickOnBounds="false">
+                    <children>
+                        <StackPane fx:id="stackpane" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+                            <children>
+                                <Label alignment="TOP_CENTER" styleClass="big" text="No Image Available" />
+                                <ImageView fx:id="img" pickOnBounds="true" preserveRatio="true" />
+                            </children>
+                        </StackPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="rightanchor" focusTraversable="true" pickOnBounds="false">
+                    <children>
+                        <HBox alignment="BASELINE_LEFT" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+                            <children>
+                                <Label fx:id="title" styleClass="bigger" text="title" />
+                                <Label fx:id="year" styleClass="big" text="Year" />
+                            </children>
+                        </HBox>
+                        <Label styleClass="big" text="Runtime" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0" />
+                        <Label fx:id="runtime" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="100.0" />
+                        <Label styleClass="big" text="Genre" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="150.0" />
+                        <Label fx:id="genre" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="150.0" />
+                        <Label styleClass="big" text="Language" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="200.0" />
+                        <Label fx:id="language" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="200.0" />
+                        <Label styleClass="big" text="Rating" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="250.0" />
+                        <Label fx:id="rating" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="250.0" />
+                        <ImageView fx:id="imdbLogo" fitHeight="40.0" preserveRatio="true" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="300.0">
+                            <image>
+                                <Image url="@IMDb.png" />
+                            </image>
+                        </ImageView>
+                        <Label fx:id="imdb" styleClass="big,url" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="300.0" />
+                        <Label styleClass="big" text="Plot" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="350.0" />
+                        <Label fx:id="plot" ellipsisString="" styleClass="big" wrapText="true" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="350.0" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+    </children>
+</fx:root>
