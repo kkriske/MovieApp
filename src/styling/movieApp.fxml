@@ -5,10 +5,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1070.0" stylesheets="@movieApp.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1070.0" stylesheets="@movieApp.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TabPane fx:id="root" pickOnBounds="false" tabClosingPolicy="UNAVAILABLE" />
-        <AnchorPane focusTraversable="true" pickOnBounds="false">
+        <TabPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <TextField id="searchbox" fx:id="searchbox" promptText="search title" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0" />
                 <ImageView fx:id="resetsearch" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" styleClass="hover" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="6.0">
@@ -18,6 +18,6 @@
                 </ImageView>
             </children>
         </AnchorPane>
-        <BorderPane fx:id="overlayRoot" focusTraversable="true" pickOnBounds="false" />
+        <BorderPane fx:id="overlayRoot" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
-</StackPane>
+</AnchorPane>
