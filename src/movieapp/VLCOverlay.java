@@ -14,26 +14,6 @@ import simplevlc.SimpleVLCPlayer;
  *
  * @author kristof
  */
-/*public class VLCOverlay {
-
- private final BorderPane root;
- private final SimpleVLCPlayer player;
-
- public VLCOverlay(Stage primstage, BorderPane root) {
- this.root = root;
- player = new SimpleVLCPlayer(primstage);
-
- root.widthProperty().addListener((s, o, n) -> player.setPrefWidth((double) n));
- root.heightProperty().addListener((s, o, n) -> player.setPrefHeight((double) n));
-
- }
-
- public void playMovie(File moviefile) {
- root.setCenter(player);
- player.play(moviefile.toString());
- }
-
- }*/
 public class VLCOverlay extends SimpleVLCPlayer {
 
     private final BorderPane root;
