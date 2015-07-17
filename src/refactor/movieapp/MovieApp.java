@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package movieapp;
+package refactor.movieapp;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import provider.OMDbProvider;
-import provider.Provider;
+import refactor.movieapp.provider.OMDbProvider;
+import refactor.movieapp.provider.Provider;
+import refactor.movieapp.util.SceneManager;
 
 /**
  *
@@ -24,13 +24,14 @@ public class MovieApp extends Application {
     private final int width = 1070, height = 700;
 
     @Override
-    public void start(Stage primaryStage) throws URISyntaxException, IOException {
-        Provider.setProvider(new OMDbProvider());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/movieApp.fxml"));
-        loader.setController(new MovieAppController(primaryStage, "movieAppProperties.properties"));
-        Parent root = loader.load();
-
+    public void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/refactor/movieapp/controllers/movieApp.fxml"));
         Scene scene = new Scene(root, width, height);
+
+        //init static classes
+        Provider.setProvider(new OMDbProvider());
+        SceneManager.setScene(scene);
+
         primaryStage.setMinHeight(height + 39);
         primaryStage.setMinWidth(width + 16);
         primaryStage.setScene(scene);
