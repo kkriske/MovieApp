@@ -41,7 +41,7 @@ public class MovieAppTab extends Tab implements Initializable {
         this.searchprop = searchprop;
         movies = new ArrayList<>();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/styling/movieAppTab.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/movieAppTab.fxml"));
             loader.setController(this);
             setContent(loader.load());
         } catch (IOException ex) {

@@ -59,7 +59,7 @@ public class MovieAppThumbnail extends StackPane implements Initializable {
         this.infoOverlay = infoOverlay;
         this.vlcOverlay = vlcOverlay;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/styling/movieAppThumbnail.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/movieAppThumbnail.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();

@@ -31,7 +31,6 @@ public class MovieAppController implements Initializable {
 
     private final List<String> extensions;
     private final Properties properties;
-    private final String propertieslocation;
     @FXML
     private TabPane root;
     @FXML
@@ -43,7 +42,6 @@ public class MovieAppController implements Initializable {
     private final Stage primstage;
 
     public MovieAppController(Stage primstage, String propertieslocation) throws IOException {
-        this.propertieslocation = propertieslocation;
         this.primstage = primstage;
         properties = new Properties();
         properties.load(getClass().getResourceAsStream(propertieslocation));

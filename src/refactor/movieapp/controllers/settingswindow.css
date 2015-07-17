@@ -1,0 +1,21 @@
+#root{
+    //-fx-background-color:#ddd;
+}
+
+.label.clickable{
+    -fx-background-color: #ddd;
+    -fx-background-radius:15;
+}
+
+.label.clickable:hover{
+    -fx-background-color: #aaa;
+}
+
+#browse:hover{
+    -fx-opacity: 0.5;
+}
+
+#title{
+    -fx-font-size:25px;
+    -fx-font-weight:bold;
+}
