@@ -26,7 +26,7 @@ public class MovieApp extends Application {
     @Override
     public void start(Stage primaryStage) throws URISyntaxException, IOException {
         Provider.setProvider(new OMDbProvider());
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/movieApp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/styling/movieApp.fxml"));
         loader.setController(new MovieAppController(primaryStage, "movieAppProperties.properties"));
         Parent root = loader.load();
 

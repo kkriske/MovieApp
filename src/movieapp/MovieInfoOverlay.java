@@ -37,7 +37,7 @@ public class MovieInfoOverlay extends AnchorPane implements Initializable {
     public MovieInfoOverlay(BorderPane root) {
         this.root = root;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/movieInfoOverlay.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/styling/movieInfoOverlay.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();

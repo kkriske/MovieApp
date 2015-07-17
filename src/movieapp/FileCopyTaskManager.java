@@ -31,7 +31,7 @@ public class FileCopyTaskManager extends Stage {
 
     private FileCopyTaskManager() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fileCopyTaskManager.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/styling/fileCopyTaskManager.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());
             setScene(scene);

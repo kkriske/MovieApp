@@ -43,7 +43,7 @@ public class FileCopyTask extends AnchorPane implements Initializable {
         infofromtext = String.format("copying %s", filename);
         infototext = String.format("to %s", destdir);
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fileCopyTask.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/styling/fileCopyTask.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
