@@ -5,23 +5,23 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1070.0" stylesheets="@movieApp.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="refactor.movieapp.controllers.MovieAppController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1070.0" stylesheets="@movieApp.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="refactor.movieapp.controllers.MovieAppController">
     <children>
-        <TabPane fx:id="tabpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <TextField id="searchbox" fx:id="searchbox" promptText="search title" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="3.0" />
-                <ImageView fx:id="resetsearch" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" styleClass="hover" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="6.0">
-                    <image>
-                        <Image url="@../../resources/resetsearch.png" />
-                    </image>
-                </ImageView>
-                <ImageView fx:id="settings" fitHeight="22.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true" styleClass="hover" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                    <image>
-                        <Image url="@../../resources/settings.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </AnchorPane>
+        <TextField id="searchbox" fx:id="searchbox" promptText="search title" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="3.0" />
+        <ImageView fx:id="resetsearch" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" styleClass="hover" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="6.0">
+            <image>
+                <Image url="@../../resources/resetsearch.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="22.0" fitWidth="19.0" onMouseClicked="#openSettings" pickOnBounds="true" preserveRatio="true" styleClass="hover" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <image>
+                <Image url="@../../resources/settings.png" />
+            </image>
+        </ImageView>
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefViewportHeight="680.0" prefViewportWidth="1050.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="35.0">
+            <content>
+                <FlowPane fx:id="flowpane"/>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

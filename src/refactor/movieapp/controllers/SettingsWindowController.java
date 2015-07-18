@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ContextMenu;
@@ -23,6 +24,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.converter.DefaultStringConverter;
@@ -75,16 +77,28 @@ public class SettingsWindowController implements Initializable {
                 addDir();
             }
         });
+        final EventHandler<MouseEvent> onMouseClickFilter = e -> {
+            if (!(e.getTarget() instanceof ListCell)) {
+                ContextMenuListCell cell = selectedCell.get();
+                if (cell != null && cell.isEditing()) {
+                    cell.cancelEdit();
+                }
+            }
+        };
         root.sceneProperty().addListener((s, o, n) -> {
+            if (o != null) {
+                o.removeEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClickFilter);
+            }
             if (n != null) {
                 extensionsContent.setAll(Settings.getExtensions());
                 directoriesContent.setAll(Settings.getDirectories());
+                n.addEventFilter(MouseEvent.MOUSE_CLICKED, onMouseClickFilter);
             }
         });
-        root.setOnMouseClicked(e -> {
-            ContextMenuListCell cell = selectedCell.get();
-            if (cell != null && cell.isEditing()) {
-                cell.cancelEdit();
+
+        selectedCell.addListener((s, o, n) -> {
+            if (o != null && o.isEditing()) {
+                o.cancelEdit();
             }
         });
 
@@ -93,51 +107,42 @@ public class SettingsWindowController implements Initializable {
         edit.setOnAction(e -> selectedCell.get().edit());
         remove.setOnAction(e -> selectedCell.get().remove());
 
-        extensions.setCellFactory(param -> {
-            ListCell cell = new ContextMenuListCell() {
-                @Override
-                public void commit(String newValue) {
-                    super.commitEdit(newValue);
-                    String oldValue = getOldValue();
-                    if (!(oldValue == null || oldValue.equalsIgnoreCase(newValue))) {
-                        removeExt(oldValue);
-                        addExt(newValue);
-                    }
+        extensions.setCellFactory(param -> new ContextMenuListCell(contextMenu) {
+            @Override
+            public void commit(String newValue) {
+                super.commitEdit(newValue);
+                String oldValue = getOldValue();
+                if (!(oldValue == null || oldValue.equalsIgnoreCase(newValue))) {
+                    removeExt(oldValue);
+                    addExt(newValue);
                 }
+            }
 
-                @Override
-                public void remove() {
-                    removeExt(getText());
-                }
-
-            };
-            cell.setContextMenu(contextMenu);
-            return cell;
+            @Override
+            public void remove() {
+                removeExt(getText());
+            }
         });
-        directories.setCellFactory(param -> {
-            ListCell cell = new ContextMenuListCell() {
-                @Override
-                public void commit(String newValue) {
-                    super.commitEdit(newValue);
-                    String oldValue = getOldValue();
-                    if (!(oldValue == null || oldValue.equalsIgnoreCase(newValue))) {
-                        removeDir(oldValue);
-                        addDir(newValue);
-                    }
+        directories.setCellFactory(param -> new ContextMenuListCell(contextMenu) {
+            @Override
+            public void commit(String newValue) {
+                super.commitEdit(newValue);
+                String oldValue = getOldValue();
+                if (!(oldValue == null || oldValue.equalsIgnoreCase(newValue))) {
+                    removeDir(oldValue);
+                    addDir(newValue);
                 }
+            }
 
-                @Override
-                public void remove() {
-                    removeDir(getText());
-                }
-
-            };
-            cell.setContextMenu(contextMenu);
-            return cell;
+            @Override
+            public void remove() {
+                removeDir(getText());
+            }
         });
     }
 
     @FXML
+
     private void save() {
         Settings.removeExtensions(extToDel);
         Settings.addExtensions(extToAdd);
@@ -191,7 +196,9 @@ public class SettingsWindowController implements Initializable {
     }
 
     private void addDir(String dir) {
-        if (new File(dir).isFile()) {
+        File file = new File(dir);
+        if (file.isDirectory()) {
+            dir = file.getAbsolutePath();
             if (dirToDel.remove(dir)) {
                 directoriesContent.add(dir);
             } else {
@@ -205,12 +212,14 @@ public class SettingsWindowController implements Initializable {
     }
 
     private void addExt(String ext) {
-        if (extToDel.remove(ext)) {
-            extensionsContent.add(ext);
-        } else {
-            extToAdd.add(ext);
-            if (!extensionsContent.contains(ext)) {
+        if (!ext.isEmpty()) {
+            if (extToDel.remove(ext)) {
                 extensionsContent.add(ext);
+            } else {
+                extToAdd.add(ext);
+                if (!extensionsContent.contains(ext)) {
+                    extensionsContent.add(ext);
+                }
             }
         }
         extField.clear();
@@ -235,8 +244,9 @@ public class SettingsWindowController implements Initializable {
 
         private String oldValue;
 
-        private ContextMenuListCell() {
+        private ContextMenuListCell(ContextMenu menu) {
             super(new DefaultStringConverter());
+            setContextMenu(menu);
             setOnMouseClicked(e -> selectedCell.set(this));
         }
 

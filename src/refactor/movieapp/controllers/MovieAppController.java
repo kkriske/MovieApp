@@ -5,17 +5,21 @@
  */
 package refactor.movieapp.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import refactor.movieapp.util.SceneManager;
+import refactor.movieapp.util.Settings;
 
 /**
  *
@@ -24,13 +28,13 @@ import refactor.movieapp.util.SceneManager;
 public class MovieAppController implements Initializable {
 
     @FXML
-    private TabPane tabpane;
-
+    private AnchorPane root;
     @FXML
     private TextField searchbox;
-
     @FXML
-    private ImageView resetsearch, settings;
+    private ImageView resetsearch;
+    @FXML
+    private FlowPane flowpane;
 
     private AnchorPane settingsroot;
 
@@ -41,17 +45,45 @@ public class MovieAppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         resetsearch.setOnMouseClicked(e -> searchbox.clear());
-        tabpane.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> searchbox.clear());
-        settings.setOnMouseClicked(e -> {
-            try {
-                if (settingsroot == null) {
-                    settingsroot = FXMLLoader.load(getClass().getResource("settingswindow.fxml"));
-                }
-                SceneManager.nextRoot(settingsroot);
-            } catch (IOException ex) {
-                System.out.println("failed to create settingswindow");
+        root.setOnMouseClicked(e -> root.requestFocus());
+        root.sceneProperty().addListener((s, o, n) -> {
+            if (n != null) {
+                init();
+                root.requestFocus();
             }
         });
+    }
+
+    @FXML
+    private void openSettings() {
+        try {
+            if (settingsroot == null) {
+                settingsroot = FXMLLoader.load(getClass().getResource("settingswindow.fxml"));
+            }
+            SceneManager.nextRoot(settingsroot);
+        } catch (IOException ex) {
+            System.out.println("failed to create settingswindow");
+        }
+    }
+
+    private void init() {
+        Settings.getDirectories()
+                .parallelStream()
+                .map(rootdir -> new File(rootdir))
+                .filter(rootdir -> rootdir.isDirectory())
+                .forEach(rootdir -> Arrays.stream(rootdir.listFiles())
+                        .parallel()
+                        .filter(moviedir -> moviedir.isDirectory())
+                        .forEach(moviedir -> Arrays.stream(moviedir.listFiles())
+                                .filter(movie -> movie.isFile())
+                                .map(movie -> movie.getName())
+                                .filter(movie -> movie.contains("."))
+                                .filter(movie -> !movie.split("\\.")[0].toLowerCase().equals("sample"))
+                                .filter(movie -> Settings.getExtensions().contains(movie.substring(movie.lastIndexOf(".") + 1)))
+                                .map(movie -> new File(moviedir, movie))
+                                .forEach(movie -> Platform.runLater(() -> flowpane.getChildren().add(new MovieThumbnail(movie))))
+                        )
+                );
     }
 
 }

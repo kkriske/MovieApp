@@ -2,16 +2,11 @@
    -fx-background-color: transparent;
 }
 
-.tab-pane .tab {
+/*.tab-pane .tab {
     -fx-background-color: #ccc;//#e6e6e6;
     -fx-focus-color: transparent;
     -fx-faint-focus-color:transparent;
 }
-
-/*.tab-pane .tab-header-area .tab-header-background {
-    -fx-background-color: transparent;
-    -fx-focus-traversable: true;
-}*/
 
 .tab-pane .tab-header-area .control-buttons-tab,
 .tab-pane .tab-header-area .headers-region{
@@ -36,7 +31,7 @@
 
 .tab-pane .tab:selected {
     -fx-background-color: #aaa;
-}
+}*/
 
 .hover:hover{
     -fx-opacity: 0.50;
