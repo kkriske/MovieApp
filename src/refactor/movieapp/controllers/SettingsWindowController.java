@@ -142,21 +142,24 @@ public class SettingsWindowController implements Initializable {
     }
 
     @FXML
-
     private void save() {
         Settings.removeExtensions(extToDel);
         Settings.addExtensions(extToAdd);
         Settings.removeDirectories(dirToDel);
         Settings.addDirectories(dirToAdd);
-        exit();
+        clear();
     }
 
-    @FXML
-    private void exit() {
+    private void clear() {
         extToDel.clear();
         extToAdd.clear();
         dirToDel.clear();
         dirToAdd.clear();
+    }
+
+    @FXML
+    private void exit() {
+        clear();
         SceneManager.previousRoot();
     }
 

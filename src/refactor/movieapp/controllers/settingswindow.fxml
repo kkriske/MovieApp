@@ -21,6 +21,6 @@
             </image>
         </ImageView>
         <Label alignment="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#save" prefHeight="25.0" prefWidth="60.0" styleClass="clickable" text="save" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
-        <Label alignment="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exit" prefHeight="25.0" prefWidth="60.0" styleClass="clickable" text="cancel" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="90.0" />
+        <Label alignment="CENTER" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exit" prefHeight="25.0" prefWidth="60.0" styleClass="clickable" text="back" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="90.0" />
     </children>
 </AnchorPane>

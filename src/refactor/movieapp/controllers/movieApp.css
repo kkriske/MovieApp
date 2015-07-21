@@ -1,5 +1,5 @@
 .scroll-pane, .scroll-pane > * {
-   -fx-background-color: transparent;
+    -fx-background-color: transparent;
 }
 
 /*.tab-pane .tab {
@@ -57,6 +57,37 @@
 
 .url:hover{
     -fx-underline: true;
+}
+.combo-box.choisebox{
+    -fx-background-color: 
+        -fx-control-inner-background,
+        #BCBCBC,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-radius: 15;
+}
+
+.combo-box.choisebox .list-cell{
+    -fx-alignment: center;
+}
+
+.combo-box.choisebox .combo-box-popup .list-view .scroll-bar:vertical .increment-arrow,
+.combo-box.choisebox .combo-box-popup .list-view .scroll-bar:vertical .decrement-arrow,
+.combo-box.choisebox .combo-box-popup .list-view .scroll-bar:vertical .increment-button,
+.combo-box.choisebox .combo-box-popup .list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+
+.combo-box.choisebox .combo-box-popup .list-view{
+    -fx-background-radius:15;
+}
+
+.combo-box.choisebox .combo-box-popup .list-view .list-cell:empty{
+    -fx-padding:0;
+}
+
+.combo-box.choisebox .combo-box-popup .list-view .list-cell{
+    -fx-background-radius:15;
+    -fx-cell-size:25;
 }
 
 #searchbox{
