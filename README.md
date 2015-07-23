@@ -11,7 +11,7 @@ This is still a work in progress.
 ### screenshots
 
 #### settings
-![settings](http://puu.sh/ja6tU/51a11b0381.png)
+![settings](screenshots/settings.png)
 
 the specified directories are assumed to have the following layout:
 
@@ -25,10 +25,10 @@ the specified directories are assumed to have the following layout:
   * etc
 
 #### main window
-![main window](http://puu.sh/ja6vK/19e718acc3.png)
+![main window](screenshots/main.png)
 
 ###### specifying IMDb ID
-![thumbnail without IMDb ID](http://puu.sh/ja7jf/23e41b118f.png) ![thumbnail with IMDb ID](http://puu.sh/ja7oJ/b0c93b41cc.png)
+![thumbnail without IMDb ID](screenshots/thumbnail_before.png) ![thumbnail with IMDb ID](screenshots/thumbnail_after.png)
 
 #### info overview
-![info overview](http://puu.sh/ja6x9/7b76158232.png)
+![info overview](screenshots/info.png)
