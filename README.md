@@ -2,7 +2,7 @@
 
 Cross-platform [javafx 8](http://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm#BABEDDGH) application for managing and watching movies from your filesystem.
 
-Movies will be streamed to vlc using [vlcj](http://capricasoftware.co.uk/#/projects/vlcj) ([github page](https://github.com/caprica/vlcj)) so you will require an up-to-date version of vlc.
+Movies will be streamed to vlc using my VLCPlayer ([github page](https://github.com/kkriske/VLCPlayer)) which uses [vlcj](http://capricasoftware.co.uk/#/projects/vlcj) ([github page](https://github.com/caprica/vlcj)) so you will require an up-to-date version of vlc.
 
 All information is fetched using [OMDb API](http://www.omdbapi.com/), the IMDb ID has to be set for each file individually.
 
