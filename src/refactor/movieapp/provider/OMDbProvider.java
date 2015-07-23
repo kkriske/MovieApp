@@ -6,6 +6,7 @@
 package refactor.movieapp.provider;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
@@ -30,12 +31,18 @@ public class OMDbProvider extends Provider {
     }
 
     @Override
-    public Properties getProperties(String imdb) {
+    public Properties getProperties(String imdb) throws ConnectException {
         try {
-            URLConnection con = new URL("http://www.omdbapi.com/?r=xml&i=" + imdb).openConnection();
+            URLConnection con = new URL("http://www.omdbapi.com/?r=xml&plot=full&i=" + imdb).openConnection();
             OMDbXML xml = (OMDbXML) um.unmarshal(con.getInputStream());
+            if (xml.hasError()) {
+                throw new ConnectException(xml.getError());
+            }
             return xml.hasResponse() ? xml.getMovie().createProperties() : null;
+        } catch (ConnectException ex) {
+            throw ex;
         } catch (IOException | JAXBException ex) {
+            ex.printStackTrace();
             System.err.println("failed to get properties");
             return null;
         }

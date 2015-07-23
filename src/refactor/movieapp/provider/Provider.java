@@ -5,6 +5,7 @@
  */
 package refactor.movieapp.provider;
 
+import java.net.ConnectException;
 import java.util.Properties;
 
 /**
@@ -23,6 +24,6 @@ public abstract class Provider {
         p = provider;
     }
 
-    abstract public Properties getProperties(String imdb);
+    abstract public Properties getProperties(String imdb) throws ConnectException;
 
 }

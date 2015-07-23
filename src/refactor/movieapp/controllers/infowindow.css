@@ -1,0 +1,19 @@
+.big {
+    -fx-font-size:15px;
+    -fx-font-weight: bold;
+    -fx-padding:2px;
+}
+
+.bigger {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+    -fx-padding:2px;
+}
+
+.url {
+    -fx-text-fill:#0645AD;
+}
+
+.url:hover{
+    -fx-underline: true;
+}

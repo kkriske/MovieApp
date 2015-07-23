@@ -148,6 +148,7 @@ public class SettingsWindowController implements Initializable {
         Settings.removeDirectories(dirToDel);
         Settings.addDirectories(dirToAdd);
         clear();
+        exit();
     }
 
     private void clear() {

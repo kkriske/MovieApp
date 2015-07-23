@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<fx:root type="ContextMenu" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <items>
+        <MenuItem onAction="#play"  mnemonicParsing="false" text="play movie" />
+        <MenuItem fx:id="infobutton" onAction="#info"  mnemonicParsing="false" text="show info" />
+        <MenuItem onAction="#opendir"  mnemonicParsing="false" text="open directory" />
+        <SeparatorMenuItem />
+        <CustomMenuItem fx:id="imdbbutton" hideOnClick="false" mnemonicParsing="false" text="IMDb">
+            <content>
+                <TextField fx:id="imdb" alignment="CENTER" prefWidth="80.0" promptText="tt0000000" />
+            </content>
+        </CustomMenuItem>
+        <MenuItem fx:id="resetbutton" onAction="#resetIMDb"  mnemonicParsing="false" text="reset IMDb" />
+        <MenuItem fx:id="reloadbutton" onAction="#reloadIMDb"  mnemonicParsing="false" text="reload IMDb" />
+    </items>
+</fx:root>

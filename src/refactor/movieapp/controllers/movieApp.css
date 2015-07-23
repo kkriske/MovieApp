@@ -2,62 +2,16 @@
     -fx-background-color: transparent;
 }
 
-/*.tab-pane .tab {
-    -fx-background-color: #ccc;//#e6e6e6;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color:transparent;
-}
-
-.tab-pane .tab-header-area .control-buttons-tab,
-.tab-pane .tab-header-area .headers-region{
-    -fx-padding:0 200 0 0;
-}
-
-.tab{
-    -fx-background-insets: 0 1 0 1,0,0;
-    -fx-background-radius: 15 15 0 0;
-    -fx-border-color: transparent;
-}
-
-.tab-pane .tab:hover{
-    -fx-background-color: #888;
-}
-
-.tab-pane {
-    -fx-focus-traversable: true;
-    -fx-background-color: transparent;
-    -fx-tab-min-width:100px;
-}
-
-.tab-pane .tab:selected {
-    -fx-background-color: #aaa;
-}*/
-
-.hover:hover{
+.thumbnail:hover{
     -fx-opacity: 0.50;
 }
 
-.big {
-    -fx-text-fill:#ddd;
-    -fx-font-size:15px;
-    -fx-font-weight: bold;
-    -fx-padding:2px;
+.thumbnail{
+    -fx-background-color:ccc;
+    -fx-background-insets:5;
+    -fx-background-radius:5;
 }
 
-.bigger {
-    -fx-text-fill:#ddd;
-    -fx-font-size: 25px;
-    -fx-font-weight: bold;
-    -fx-padding:2px;
-}
-
-.url {
-    -fx-text-fill:#0645AD;
-}
-
-.url:hover{
-    -fx-underline: true;
-}
 .combo-box.choisebox{
     -fx-background-color: 
         -fx-control-inner-background,

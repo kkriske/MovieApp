@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import refactor.movieapp.controllers.MovieThumbnail.Comparator;
@@ -68,6 +69,7 @@ public class MovieAppController implements Initializable {
     };
 
     private AnchorPane settingsroot;
+    private ThumbnailContextMenu contextmenu;
     private boolean changed;
     private final List<MovieThumbnail> tobeloaded, thumbnails;
 
@@ -85,7 +87,18 @@ public class MovieAppController implements Initializable {
                 searchbox.clear();
             }
         });
-        root.setOnMouseClicked(e -> root.requestFocus());
+        root.setOnMouseClicked(e -> {
+            root.requestFocus();
+            if (MouseButton.SECONDARY.equals(e.getButton())) {
+                if (e.getTarget() instanceof MovieThumbnail) {
+                    if (contextmenu == null) {
+                        contextmenu = new ThumbnailContextMenu(MovieAppController.this.root.getScene().getWindow());
+                    }
+                    contextmenu.showMenu((MovieThumbnail) e.getTarget(), e.getScreenX(), e.getScreenY());
+                }
+            }
+
+        });
         Map<KeyCode, EventHandler<KeyEvent>> map = new HashMap<>();
         map.put(KeyCode.F, e -> searchbox.requestFocus());
         map.put(KeyCode.S, e -> sortbox.show());
@@ -111,12 +124,8 @@ public class MovieAppController implements Initializable {
                 init();
                 root.requestFocus();
             }
-        }
-        );
-        Settings.getDirectories().addListener((Change<? extends String> change) -> {
-            changed = true;
-        }
-        );
+        });
+        Settings.getDirectories().addListener((Change<? extends String> change) -> changed = true);
 
         //init comboboxes
         sortbox.getItems().addAll(
@@ -196,6 +205,7 @@ public class MovieAppController implements Initializable {
                                             MovieThumbnail thumb = new MovieThumbnail(movie);
                                             thumb.setLayoutY(1.0);//workaround to force the property to update
                                             thumb.layoutYProperty().addListener(e -> checkVisible(thumb));
+                                            thumb.getPropProperty().addListener((s, o, n) -> refreshOverview(true, false));
                                             tobeloaded.add(thumb);
                                         })
                                 )

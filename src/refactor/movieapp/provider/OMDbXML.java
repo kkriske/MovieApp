@@ -22,8 +22,19 @@ public class OMDbXML {
     @XmlElement
     private OMDbMovieXml movie;
 
+    @XmlElement
+    private String error;
+
     public boolean hasResponse() {
         return Boolean.parseBoolean(response.toLowerCase());
+    }
+
+    public boolean hasError() {
+        return error != null;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public OMDbMovieXml getMovie() {

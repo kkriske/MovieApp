@@ -32,7 +32,7 @@ public class OMDbProvider extends Provider {
     @Override
     public Properties getProperties(String imdb) {
         try {
-            URLConnection con = new URL("http://www.omdbapi.com/?r=xml&i=" + imdb).openConnection();
+            URLConnection con = new URL("http://www.omdbapi.com/?r=xml&plot=full&type=movie&i=" + imdb).openConnection();
             OMDbXML xml = (OMDbXML) um.unmarshal(con.getInputStream());
             return xml.hasResponse() ? xml.getMovie().createProperties() : null;
         } catch (IOException | JAXBException ex) {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1070.0" stylesheets="@infowindow.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fx:id="img" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+        <AnchorPane fx:id="infopane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <children><TextFlow AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+<children><Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bigger" text="title" /><Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="big" text=" (" /><Text fx:id="year" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="big" text="year" /><Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="big" text=")" />
+</children>
+<opaqueInsets>
+<Insets />
+</opaqueInsets></TextFlow>
+                <Label styleClass="big" text="Runtime" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0" />
+                <Label fx:id="runtime" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="100.0" />
+                <Label styleClass="big" text="Genre" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="150.0" />
+                <Label fx:id="genre" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="150.0" />
+                <Label styleClass="big" text="Language" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="200.0" />
+                <Label fx:id="language" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="200.0" />
+                <Label styleClass="big" text="Rating" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="250.0" />
+                <Label fx:id="rating" styleClass="big" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="250.0" />
+                <ImageView fx:id="imdbLogo" fitHeight="40.0" preserveRatio="true" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="300.0">
+                    <image>
+                        <Image url="@../../resources/IMDb.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="imdb" onMouseClicked="#openIMDb" styleClass="big,url" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="300.0" />
+                <Label styleClass="big" text="Plot" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="350.0" />
+                <Label fx:id="plot" ellipsisString="" styleClass="big" wrapText="true" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0" />
+            </children>
+        </AnchorPane>
+    </children>
+</fx:root>

@@ -8,9 +8,9 @@ package refactor.movieapp.controllers;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +29,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javax.imageio.ImageIO;
+import refactor.movieapp.provider.Provider;
 
 /**
  *
@@ -36,7 +39,7 @@ public class MovieThumbnail extends StackPane implements Initializable {
 
     private final File movie;
     private boolean loaded;
-    private Properties prop;
+    private ObjectProperty<Properties> prop;
     private static final String PROPERTIES_FILENAME = "movieproperties.properties";
     private static final String POSTER_FILENAME = "poster.jpg";
 
@@ -48,15 +51,17 @@ public class MovieThumbnail extends StackPane implements Initializable {
     public MovieThumbnail(File movie) {
         this.movie = movie;
         loaded = false;
+        prop = new SimpleObjectProperty<>(null);
         setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setPrefSize(170, 290);
         //init properties
-        File propfile = new File(movie.getParentFile(), PROPERTIES_FILENAME);
+        File propfile = getPropfile();
         if (propfile.isFile()) {
-            prop = new Properties();
+            Properties properties = new Properties();
             try {
-                prop.load(new FileInputStream(propfile));
+                properties.load(new FileInputStream(propfile));
+                prop.set(properties);
             } catch (IOException ex) {
                 System.err.println("Failed to load properties");
             }
@@ -90,53 +95,99 @@ public class MovieThumbnail extends StackPane implements Initializable {
         init();
     }
 
+    public File getPosterFile() {
+        return new File(movie.getParentFile(), POSTER_FILENAME);
+    }
+
+    public File getPropfile() {
+        return new File(movie.getParentFile(), PROPERTIES_FILENAME);
+    }
+
     private void init() {
         new Thread(() -> {
             //init poster
-            File posterfile = new File(movie.getParentFile(), POSTER_FILENAME);
-            if (posterfile.isFile()) {
+            File posterfile = getPosterFile();
+            if (prop != null && posterfile.isFile()) {
                 Platform.runLater(() -> {
-                    try {
-                        img.setImage(new Image(new FileInputStream(posterfile)));
-                    } catch (FileNotFoundException ex) {
+                    try (FileInputStream fi = new FileInputStream(posterfile)) {
+                        img.setImage(new Image(fi));
+                    } catch (IOException ex) {
                         System.err.println("failed to load image");
                     }
                 });
+            } else {
+                Platform.runLater(() -> img.setImage(null));
             }
 
             //init text
+            Properties properties = prop.get();
             Platform.runLater(() -> title.setText(
-                    prop == null
+                    properties == null
                             ? movie.getName()
                             : String.format("%s (%s)",
-                                    prop.getProperty("title"),
-                                    prop.getProperty("year"))));
+                                    properties.getProperty("title"),
+                                    properties.getProperty("year"))));
         }).start();
     }
 
-    public void delete() {
-        img.setImage(null);
-        title.setText(movie.getName());
-    }
-
-    public boolean setProperties(Properties properties) {
-        if (properties != null) {
-            prop = properties;
-            try (FileOutputStream fo = new FileOutputStream(new File(movie.getParentFile(), PROPERTIES_FILENAME))) {
-                prop.store(fo, null);
-                BufferedImage img = ImageIO.read(new URL(properties.getProperty("poster")));
-                ImageIO.write(img, "jpg", new File(movie.getParentFile(), POSTER_FILENAME));
-            } catch (IOException ex) {
-                System.err.println("Failed to write movieproperties.properties file");
+    public boolean setProperties(String imdb) {
+        try {
+            if (imdb == null || imdb.isEmpty()) {
+                return false;
+            } else if (imdb.matches("^tt[0-9]{7}$")) {
+                Properties properties = Provider.getProvider().getProperties(imdb);
+                if (properties == null) {
+                    return false;
+                }
+                try (FileOutputStream fo = new FileOutputStream(getPropfile())) {
+                    properties.store(fo, null);
+                    BufferedImage img = ImageIO.read(new URL(properties.getProperty("poster")));
+                    ImageIO.write(img, "jpg", getPosterFile());
+                } catch (IOException ex) {
+                    System.err.println("failed to write movieproperties.properties file");
+                }
+                prop.set(properties);
+                init();
+                return true;
             }
-            return true;
+        } catch (ConnectException ex) {
+            System.err.println(ex);
         }
         return false;
     }
 
+    public boolean removeProperties() {
+        boolean success = getPropfile().delete();
+        if (success) {
+            getPosterFile().delete();
+            prop.set(null);
+            init();
+        }
+        return success;
+    }
+
+    public boolean hasProp() {
+        return prop.get() != null;
+    }
+
+    public Properties getProp() {
+        return prop.get();
+    }
+
+    public ObjectProperty<Properties> getPropProperty() {
+        return prop;
+    }
+
+    public File getMovie() {
+        return movie;
+    }
+
     public void filter(File dir, String genre, String filter) {
-        boolean visible = filter == null || filter.isEmpty() || (prop == null ? movie.getName() : prop.getProperty("title")).toLowerCase().contains(filter);
-        visible = visible && (genre == null || (prop == null ? "" : prop.getProperty("genre")).toLowerCase().contains(genre));
+        Properties properties = prop.get();
+        boolean visible = filter == null || filter.isEmpty()
+                || (filter.matches("^tt[0-9]{7}$") && properties != null && properties.getProperty("imdb").toLowerCase().equals(filter))
+                || (properties == null ? movie.getName() : properties.getProperty("title")).toLowerCase().contains(filter);
+        visible = visible && (genre == null || (properties == null ? "" : properties.getProperty("genre")).toLowerCase().contains(genre));
         final boolean v = visible && (dir == null || (dir.equals(movie.getParentFile().getParentFile())));
 
         Platform.runLater(() -> {
@@ -242,8 +293,8 @@ public class MovieThumbnail extends StackPane implements Initializable {
 
         @Override
         public int compare(Node o1, Node o2) {
-            Properties p1 = ((MovieThumbnail) o1).prop,
-                    p2 = ((MovieThumbnail) o2).prop;
+            Properties p1 = ((MovieThumbnail) o1).prop.get(),
+                    p2 = ((MovieThumbnail) o2).prop.get();
             return p1 == null
                     ? p2 == null
                             ? 0
