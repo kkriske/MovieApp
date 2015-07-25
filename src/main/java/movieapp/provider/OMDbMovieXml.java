@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.provider;
+package main.java.movieapp.provider;
 
 import java.util.Properties;
 import javax.xml.bind.annotation.XmlAttribute;

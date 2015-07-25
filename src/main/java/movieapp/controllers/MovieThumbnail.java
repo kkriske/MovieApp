@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.controllers;
+package main.java.movieapp.controllers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,15 +27,16 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
 import javax.imageio.ImageIO;
-import refactor.movieapp.provider.Provider;
+import main.java.movieapp.provider.Provider;
+import main.java.movieapp.util.ThreadExecutor;
 
 /**
  *
  * @author kristof
  */
-public class MovieThumbnail extends StackPane implements Initializable {
+public class MovieThumbnail extends AnchorPane implements Initializable {
 
     private final File movie;
     private boolean loaded;
@@ -47,17 +48,20 @@ public class MovieThumbnail extends StackPane implements Initializable {
     private ImageView img;
     @FXML
     private Label title;
+    private boolean imgLoaded;
+    private File posterfile;
+    private File propfile;
 
     public MovieThumbnail(File movie) {
         this.movie = movie;
         loaded = false;
+        imgLoaded = false;
         prop = new SimpleObjectProperty<>(null);
         setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setPrefSize(170, 290);
         //init properties
-        File propfile = getPropfile();
-        if (propfile.isFile()) {
+        if (getPropfile().isFile()) {
             Properties properties = new Properties();
             try {
                 properties.load(new FileInputStream(propfile));
@@ -95,28 +99,27 @@ public class MovieThumbnail extends StackPane implements Initializable {
         init();
     }
 
-    public File getPosterFile() {
-        return new File(movie.getParentFile(), POSTER_FILENAME);
+    public final File getPosterFile() {
+        if (posterfile == null) {
+            posterfile = new File(movie.getParentFile(), POSTER_FILENAME);
+        }
+        return posterfile;
     }
 
-    public File getPropfile() {
-        return new File(movie.getParentFile(), PROPERTIES_FILENAME);
+    public final File getPropfile() {
+        if (propfile == null) {
+            propfile = new File(movie.getParentFile(), PROPERTIES_FILENAME);
+        }
+        return propfile;
     }
 
     private void init() {
-        new Thread(() -> {
+        ThreadExecutor.execute(() -> {
             //init poster
-            File posterfile = getPosterFile();
-            if (prop != null && posterfile.isFile()) {
-                Platform.runLater(() -> {
-                    try (FileInputStream fi = new FileInputStream(posterfile)) {
-                        img.setImage(new Image(fi));
-                    } catch (IOException ex) {
-                        System.err.println("failed to load image");
-                    }
-                });
+            if (prop != null && getPosterFile().isFile()) {
+                loadImg();
             } else {
-                Platform.runLater(() -> img.setImage(null));
+                unloadImg();
             }
 
             //init text
@@ -127,7 +130,7 @@ public class MovieThumbnail extends StackPane implements Initializable {
                             : String.format("%s (%s)",
                                     properties.getProperty("title"),
                                     properties.getProperty("year"))));
-        }).start();
+        });
     }
 
     public boolean setProperties(String imdb) {
@@ -141,8 +144,8 @@ public class MovieThumbnail extends StackPane implements Initializable {
                 }
                 try (FileOutputStream fo = new FileOutputStream(getPropfile())) {
                     properties.store(fo, null);
-                    BufferedImage img = ImageIO.read(new URL(properties.getProperty("poster")));
-                    ImageIO.write(img, "jpg", getPosterFile());
+                    BufferedImage bufimg = ImageIO.read(new URL(properties.getProperty("poster")));
+                    ImageIO.write(bufimg, "jpg", getPosterFile());
                 } catch (IOException ex) {
                     System.err.println("failed to write movieproperties.properties file");
                 }
@@ -194,6 +197,37 @@ public class MovieThumbnail extends StackPane implements Initializable {
             setVisible(v);
             setManaged(v);
         });
+    }
+
+    public synchronized void loadImg() {
+        if (imgLoaded) {
+            return;
+        }
+        imgLoaded = true;
+        //System.out.println("load");
+
+        //try (FileInputStream fi = new FileInputStream(getPosterFile())) {
+        Image image = new Image("file:" + getPosterFile().toString(), 160, 240, true, true);
+        Platform.runLater(() -> img.setImage(image));
+        //} catch (IOException ex) {
+        //    System.err.println("failed to load image");
+        //}
+    }
+
+    //private static int count = 0;
+    public synchronized void unloadImg() {
+        if (!imgLoaded) {
+            return;
+        }
+        imgLoaded = false;
+        //System.out.println("unload");
+        //count++;
+        Platform.runLater(() -> img.setImage(null));
+        //System.gc();
+        /*if (count % 12 == 0) {
+         count = 0;
+         Runtime.getRuntime().gc();
+         }*/
     }
 
     public static abstract class Comparator implements java.util.Comparator<Node> {

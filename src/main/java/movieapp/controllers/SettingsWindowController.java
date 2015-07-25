@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.controllers;
+package main.java.movieapp.controllers;
 
 import java.io.File;
 import java.net.URL;
@@ -28,8 +28,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.converter.DefaultStringConverter;
-import refactor.movieapp.util.SceneManager;
-import refactor.movieapp.util.Settings;
+import main.java.movieapp.util.SceneManager;
+import main.java.movieapp.util.Settings;
 
 /**
  *

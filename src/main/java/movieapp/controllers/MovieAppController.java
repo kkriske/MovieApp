@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.controllers;
+package main.java.movieapp.controllers;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +31,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import refactor.movieapp.controllers.MovieThumbnail.Comparator;
-import refactor.movieapp.util.SceneManager;
-import refactor.movieapp.util.Settings;
+import main.java.movieapp.controllers.MovieThumbnail.Comparator;
+import main.java.movieapp.util.SceneManager;
+import main.java.movieapp.util.Settings;
+import main.java.movieapp.util.ThreadExecutor;
 
 /**
  *
@@ -81,7 +82,9 @@ public class MovieAppController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        resetsearch.setOnMouseClicked(e -> searchbox.clear());
+        resetsearch.setOnMouseClicked(e -> {
+            searchbox.clear();
+        });
         searchbox.setOnKeyPressed(e -> {
             if (KeyCode.ESCAPE.equals(e.getCode())) {
                 searchbox.clear();
@@ -153,10 +156,10 @@ public class MovieAppController implements Initializable {
         scrollpane.heightProperty().addListener(e -> updateVisible());
 
         //init listeners for filtering and sorting
-        sortbox.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> refreshOverview(true, false));
-        dirbox.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> refreshOverview(false, true));
-        genrebox.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> refreshOverview(false, true));
-        searchbox.textProperty().addListener((s, o, n) -> refreshOverview(false, true));
+        sortbox.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> refreshOverview(true, false, false));
+        dirbox.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> refreshOverview(false, true, false));
+        genrebox.getSelectionModel().selectedItemProperty().addListener((s, o, n) -> refreshOverview(false, true, false));
+        searchbox.textProperty().addListener((s, o, n) -> refreshOverview(false, true, true));
     }
 
     @FXML
@@ -173,7 +176,7 @@ public class MovieAppController implements Initializable {
 
     private synchronized void init() {
 
-        new Thread(() -> {
+        ThreadExecutor.execute(() -> {
             if (changed) {
                 changed = false;
                 thumbnails.clear();
@@ -205,7 +208,7 @@ public class MovieAppController implements Initializable {
                                             MovieThumbnail thumb = new MovieThumbnail(movie);
                                             thumb.setLayoutY(1.0);//workaround to force the property to update
                                             thumb.layoutYProperty().addListener(e -> checkVisible(thumb));
-                                            thumb.getPropProperty().addListener((s, o, n) -> refreshOverview(true, false));
+                                            thumb.getPropProperty().addListener((s, o, n) -> refreshOverview(true, false, false));
                                             tobeloaded.add(thumb);
                                         })
                                 )
@@ -217,27 +220,32 @@ public class MovieAppController implements Initializable {
                 dirbox.getSelectionModel().select(null);
                 genrebox.getSelectionModel().select(null);
                 searchbox.clear();
-                refreshOverview(true, false);
+                refreshOverview(true, false, false);
             });
-        }).start();
+        });
 
     }
 
-    private void refreshOverview(boolean sort, boolean filter) {
-        if (sort) {
-            thumbnails.sort(sortbox.getSelectionModel().getSelectedItem());
-        }
-        if (filter) {
-            String f = searchbox.getText().toLowerCase();
-            File dir = dirbox.getSelectionModel().getSelectedItem();
-            String g = genrebox.getSelectionModel().getSelectedItem();
-            if (g != null) {
-                g = g.toLowerCase();
+    private void refreshOverview(boolean sort, boolean filter, boolean updateVisible) {
+        ThreadExecutor.execute(() -> {
+            if (sort) {
+                thumbnails.sort(sortbox.getSelectionModel().getSelectedItem());
+                Platform.runLater(() -> flowpane.getChildren().setAll(thumbnails));
             }
-            final String gg = g;
-            thumbnails.stream().forEach(m -> m.filter(dir, gg, f));
-        }
-        Platform.runLater(() -> flowpane.getChildren().setAll(thumbnails));
+            if (filter) {
+                String f = searchbox.getText().toLowerCase();
+                File dir = dirbox.getSelectionModel().getSelectedItem();
+                String g = genrebox.getSelectionModel().getSelectedItem();
+                if (g != null) {
+                    g = g.toLowerCase();
+                }
+                final String gg = g;
+                thumbnails.stream().forEach(m -> m.filter(dir, gg, f));
+            }
+            if (updateVisible) {
+                Platform.runLater(() -> updateVisible());
+            }
+        });
     }
 
     private void updateVisible() {
@@ -245,15 +253,15 @@ public class MovieAppController implements Initializable {
             List<MovieThumbnail> tmp = new ArrayList<>();
             tobeloaded.stream().forEach(thumb -> {
                 if (checkVisible(thumb)) {
-                    tmp.add(thumb);
+                    //tmp.add(thumb);
                 }
             });
-            tobeloaded.removeAll(tmp);
+            //tobeloaded.removeAll(tmp);
         }
     }
 
     private boolean checkVisible(MovieThumbnail thumb) {
-        if (!thumb.isLoaded() || !thumb.isVisible()) {
+        if (thumb.isVisible()) {
             double x1 = scrollpane.getVvalue() * (flowpane.getHeight() - scrollpane.getHeight());
             double x2 = x1 + scrollpane.getHeight();
             x1 -= 300;
@@ -261,7 +269,15 @@ public class MovieAppController implements Initializable {
             double y1 = thumb.getLayoutY();
             double y2 = y1 + thumb.getHeight();
             if (y2 > y1 && x1 <= y2 && y1 <= x2) {
-                thumb.load();
+                if (thumb.isLoaded()) {
+                    thumb.loadImg();
+                } else {
+                    thumb.load();
+                }
+            } else {
+                if (thumb.isLoaded()) {
+                    thumb.unloadImg();
+                }
             }
         }
         return thumb.isLoaded();

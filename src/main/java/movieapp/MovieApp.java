@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp;
+package main.java.movieapp;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -12,9 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import refactor.movieapp.provider.OMDbProvider;
-import refactor.movieapp.provider.Provider;
-import refactor.movieapp.util.SceneManager;
+import main.java.movieapp.provider.OMDbProvider;
+import main.java.movieapp.provider.Provider;
+import main.java.movieapp.util.SceneManager;
+import main.java.movieapp.util.ThreadExecutor;
 
 /**
  *
@@ -26,13 +27,15 @@ public class MovieApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/refactor/movieapp/controllers/movieApp.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/main/java/movieapp/controllers/movieApp.fxml"));
         Scene scene = new Scene(root, width, height);
-        primaryStage.getIcons().add(new Image("/refactor/resources/icon.png"));
+        primaryStage.getIcons().add(new Image("/main/java/resources/icon.png"));
 
         //init static classes
         Provider.setProvider(new OMDbProvider());
         SceneManager.setScene(scene);
+
+        primaryStage.setOnCloseRequest(e -> ThreadExecutor.shutdown());
 
         primaryStage.setTitle("Movies");
         primaryStage.setMinHeight(height + 39);

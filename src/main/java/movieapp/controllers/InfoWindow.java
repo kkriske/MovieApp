@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.controllers;
+package main.java.movieapp.controllers;
 
 import java.awt.Desktop;
 import java.io.FileInputStream;
@@ -26,7 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import refactor.movieapp.util.SceneManager;
+import main.java.movieapp.util.SceneManager;
 
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.util;
+package main.java.movieapp.util;
 
 import java.util.Stack;
 import javafx.scene.Parent;

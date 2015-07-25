@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package refactor.movieapp.controllers;
+package main.java.movieapp.controllers;
 
 import com.sun.javafx.scene.control.skin.ContextMenuSkin;
 import java.awt.Desktop;
@@ -19,7 +19,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Window;
-import refactor.movieapp.util.SceneManager;
+import main.java.movieapp.util.SceneManager;
+import main.java.movieapp.util.ThreadExecutor;
 
 /**
  *
@@ -105,16 +106,16 @@ public class ThumbnailContextMenu extends ContextMenu implements Initializable {
     @FXML
     private void reloadIMDb() {
         final MovieThumbnail cur = current;
-        new Thread(() -> {
+        ThreadExecutor.execute(() -> {
             String key = cur.getProp().getProperty("imdb");
             cur.setProperties(key);
-        }).start();
+        });
     }
 
     private void setIMDb(String id) {
         final MovieThumbnail cur = current;
 
-        new Thread(() -> {
+        ThreadExecutor.execute(() -> {
             boolean success = cur.setProperties(id);
             Platform.runLater(() -> {
                 imdbbutton.setVisible(!success);
@@ -122,7 +123,7 @@ public class ThumbnailContextMenu extends ContextMenu implements Initializable {
                 infobutton.setVisible(success);
                 reloadbutton.setVisible(success);
             });
-        }).start();
+        });
     }
 
 }
