@@ -18,6 +18,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import main.java.movieapp.util.SceneManager;
 import main.java.movieapp.util.ThreadExecutor;
@@ -35,6 +36,7 @@ public class ThumbnailContextMenu extends ContextMenu implements Initializable {
     @FXML
     private TextField imdb;
     private InfoWindow infowindow;
+    private VLCPlayerWindow vlc;
 
     public ThumbnailContextMenu(Window owner) {
         this.owner = owner;
@@ -76,12 +78,19 @@ public class ThumbnailContextMenu extends ContextMenu implements Initializable {
     }
 
     @FXML
-    private void play() {
-
+    private synchronized void play() {
+        final MovieThumbnail cur = current;
+        ThreadExecutor.execute(() -> {
+            if (vlc == null) {
+                vlc = new VLCPlayerWindow((Stage) owner);
+            }
+            SceneManager.nextRoot(vlc);
+            vlc.play(cur.getMovie(), cur.getMovie().getName());
+        });
     }
 
     @FXML
-    private void info() {
+    private synchronized void info() {
         if (infowindow == null) {
             infowindow = new InfoWindow();
         }
