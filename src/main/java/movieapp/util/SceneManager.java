@@ -6,6 +6,7 @@
 package main.java.movieapp.util;
 
 import java.util.Stack;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -29,7 +30,7 @@ public final class SceneManager {
     static final public void nextRoot(Parent root) {
         if (s != null) {
             r.push(s.getRoot());
-            s.setRoot(root);
+            Platform.runLater(() -> s.setRoot(root));
         }
     }
 

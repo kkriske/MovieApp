@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import main.java.movieapp.util.SceneManager;
 import main.java.movieapp.util.ThreadExecutor;
+import simplevlc.SimpleVLCPlayer;
 
 /**
  *
@@ -32,7 +33,7 @@ public class ThumbnailContextMenu extends ContextMenu implements Initializable {
     private final Window owner;
     private MovieThumbnail current;
     @FXML
-    private MenuItem imdbbutton, resetbutton, infobutton, reloadbutton;
+    private MenuItem playbutton, imdbbutton, resetbutton, infobutton, reloadbutton;
     @FXML
     private TextField imdb;
     private InfoWindow infowindow;
@@ -53,6 +54,8 @@ public class ThumbnailContextMenu extends ContextMenu implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        playbutton.setVisible(SimpleVLCPlayer.isPlatformSupported());
+
         ContextMenuSkin skin = new ContextMenuSkin(this);
         skin.getNode().setOnKeyPressed(e -> e.consume());
         setSkin(skin);

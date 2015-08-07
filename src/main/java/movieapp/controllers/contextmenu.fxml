@@ -5,7 +5,7 @@
 
 <fx:root type="ContextMenu" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <items>
-        <MenuItem onAction="#play"  mnemonicParsing="false" text="play movie" />
+        <MenuItem fx:id="playbutton" onAction="#play"  mnemonicParsing="false" text="play movie" />
         <MenuItem fx:id="infobutton" onAction="#info"  mnemonicParsing="false" text="show info" />
         <MenuItem onAction="#opendir"  mnemonicParsing="false" text="open directory" />
         <SeparatorMenuItem />

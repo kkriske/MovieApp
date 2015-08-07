@@ -29,14 +29,14 @@ public final class Settings {
     /**
      * name of property file
      */
-    static final public String PROPERTIES_FILENAME = "movieAppProperties.properties";
+    static final public String PROPERTIES_FILENAME = "movieAppProperties.ini";
     /**
      * full path to property file
      */
     static final public String PROPERTIES_PATH = PROPERTIES_DIRECTORY + File.separator + PROPERTIES_FILENAME;
     static final private String EXTENSIONS = "extensions";
     static final private String DIRECTORIES = "movie-directories";
-    static final private String DEFAULT_EXTENSIONS = "[mpeg,mpg,mpe,m1s,mpa,mp2,m2a,mp2v,m2v,m2s,avi,mov,qt,asf,asx,wmv,wma,wmx,rm,ra,ram,rmvb,mp4,3gp,mkv,ogm]";
+    static final private String DEFAULT_EXTENSIONS = "mpeg,mpg,mpe,m1s,mpa,mp2,m2a,mp2v,m2v,m2s,avi,mov,qt,asf,asx,wmv,wma,wmx,rm,ra,ram,rmvb,mp4,3gp,mkv,ogm";
     static final private Properties properties = new Properties();
     static final private ObservableSet<String> extensions = FXCollections.observableSet(new TreeSet<>(String.CASE_INSENSITIVE_ORDER));
     static final private ObservableSet<String> directories = FXCollections.observableSet(new TreeSet<>(String.CASE_INSENSITIVE_ORDER));
@@ -55,7 +55,7 @@ public final class Settings {
             } else {
                 properties.load(new FileInputStream(PROPERTIES_PATH));
                 try {
-                    String prop = properties.getProperty(EXTENSIONS).replaceAll("^\\[|\\]$", "");
+                    String prop = properties.getProperty(EXTENSIONS);
                     if (!prop.matches("[ ]*")) {
                         extensions.addAll(Arrays.asList(prop.split(",[ ]*")));
                     }
@@ -63,7 +63,7 @@ public final class Settings {
                     resetExtensions();
                 }
                 try {
-                    String prop = properties.getProperty(DIRECTORIES).replaceAll("^\\[|\\]$", "");
+                    String prop = properties.getProperty(DIRECTORIES);
                     if (!prop.matches("[ ]*")) {
                         directories.addAll(Arrays.asList(prop.split(",[ ]*")));
                     }
@@ -91,7 +91,7 @@ public final class Settings {
     static final public boolean removeExtensions(Set<String> ext) {
         boolean success = extensions.removeAll(ext);
         if (success) {
-            properties.setProperty(EXTENSIONS, extensions.toString());
+            properties.setProperty(EXTENSIONS, extensions.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -100,7 +100,7 @@ public final class Settings {
     static final public boolean removeExtension(String ext) {
         boolean success = extensions.remove(ext);
         if (success) {
-            properties.setProperty(EXTENSIONS, extensions.toString());
+            properties.setProperty(EXTENSIONS, extensions.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -109,7 +109,7 @@ public final class Settings {
     static final public boolean addExtensions(Set<String> ext) {
         boolean success = extensions.addAll(ext);
         if (success) {
-            properties.setProperty(EXTENSIONS, extensions.toString());
+            properties.setProperty(EXTENSIONS, extensions.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -118,7 +118,7 @@ public final class Settings {
     static final public boolean addExtension(String ext) {
         boolean success = extensions.add(ext);
         if (success) {
-            properties.setProperty(EXTENSIONS, extensions.toString());
+            properties.setProperty(EXTENSIONS, extensions.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -127,14 +127,14 @@ public final class Settings {
     static final public void resetExtensions() {
         properties.setProperty(EXTENSIONS, DEFAULT_EXTENSIONS);
         extensions.clear();
-        extensions.addAll(Arrays.asList(properties.getProperty(EXTENSIONS).replaceAll("^\\[|\\]$", "").split(",[ ]*")));
+        extensions.addAll(Arrays.asList(properties.getProperty(EXTENSIONS).split(",[ ]*")));
         saveProperties();
     }
 
     static final public boolean removeDirectories(Set<String> dir) {
         boolean success = directories.removeAll(dir);
         if (success) {
-            properties.setProperty(DIRECTORIES, directories.toString());
+            properties.setProperty(DIRECTORIES, directories.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -143,7 +143,7 @@ public final class Settings {
     static final public boolean removeDirectory(String dir) {
         boolean success = directories.remove(dir);
         if (success) {
-            properties.setProperty(DIRECTORIES, directories.toString());
+            properties.setProperty(DIRECTORIES, directories.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -152,7 +152,7 @@ public final class Settings {
     static final public boolean addDirectories(Set<String> dir) {
         boolean success = directories.addAll(dir);
         if (success) {
-            properties.setProperty(DIRECTORIES, directories.toString());
+            properties.setProperty(DIRECTORIES, directories.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;
@@ -161,7 +161,7 @@ public final class Settings {
     static final public boolean addDirectory(String dir) {
         boolean success = directories.add(dir);
         if (success) {
-            properties.setProperty(DIRECTORIES, directories.toString());
+            properties.setProperty(DIRECTORIES, directories.toString().replaceAll("^\\[|\\]$", ""));
             saveProperties();
         }
         return success;

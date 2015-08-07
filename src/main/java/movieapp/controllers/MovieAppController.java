@@ -214,14 +214,14 @@ public class MovieAppController implements Initializable {
                                 )
                         );
                 thumbnails.addAll(tobeloaded);
+                Platform.runLater(() -> {
+                    sortbox.getSelectionModel().select(Comparator.forYear());
+                    dirbox.getSelectionModel().select(null);
+                    genrebox.getSelectionModel().select(null);
+                    searchbox.clear();
+                    refreshOverview(true, false, false);
+                });
             }
-            Platform.runLater(() -> {
-                sortbox.getSelectionModel().select(Comparator.forYear());
-                dirbox.getSelectionModel().select(null);
-                genrebox.getSelectionModel().select(null);
-                searchbox.clear();
-                refreshOverview(true, false, false);
-            });
         });
 
     }

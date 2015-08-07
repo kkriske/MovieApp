@@ -41,7 +41,7 @@ public class MovieThumbnail extends AnchorPane implements Initializable {
     private final File movie;
     private boolean loaded;
     private ObjectProperty<Properties> prop;
-    private static final String PROPERTIES_FILENAME = "movieproperties.properties";
+    private static final String PROPERTIES_FILENAME = "movieproperties.ini";
     private static final String POSTER_FILENAME = "poster.jpg";
 
     @FXML
@@ -49,19 +49,21 @@ public class MovieThumbnail extends AnchorPane implements Initializable {
     @FXML
     private Label title;
     private boolean imgLoaded;
-    private File posterfile;
-    private File propfile;
+    private final File posterfile;
+    private final File propfile;
 
     public MovieThumbnail(File movie) {
         this.movie = movie;
         loaded = false;
         imgLoaded = false;
         prop = new SimpleObjectProperty<>(null);
+        propfile = new File(movie.getParentFile(), PROPERTIES_FILENAME);
+        posterfile = new File(movie.getParentFile(), POSTER_FILENAME);
         setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setPrefSize(170, 290);
         //init properties
-        if (getPropfile().isFile()) {
+        if (propfile.isFile()) {
             Properties properties = new Properties();
             try {
                 properties.load(new FileInputStream(propfile));
@@ -100,16 +102,10 @@ public class MovieThumbnail extends AnchorPane implements Initializable {
     }
 
     public final File getPosterFile() {
-        if (posterfile == null) {
-            posterfile = new File(movie.getParentFile(), POSTER_FILENAME);
-        }
         return posterfile;
     }
 
     public final File getPropfile() {
-        if (propfile == null) {
-            propfile = new File(movie.getParentFile(), PROPERTIES_FILENAME);
-        }
         return propfile;
     }
 
@@ -147,7 +143,7 @@ public class MovieThumbnail extends AnchorPane implements Initializable {
                     BufferedImage bufimg = ImageIO.read(new URL(properties.getProperty("poster")));
                     ImageIO.write(bufimg, "jpg", getPosterFile());
                 } catch (IOException ex) {
-                    System.err.println("failed to write movieproperties.properties file");
+                    System.err.println("failed to write movieproperties.ini file");
                 }
                 prop.set(properties);
                 init();

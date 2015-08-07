@@ -32,3 +32,6 @@ the specified directories are assumed to have the following layout:
 
 #### info overview
 ![info overview](screenshots/info.png)
+
+#### movie playback
+![movie playback](screenshots/playback.png)

@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import main.java.movieapp.util.SceneManager;
@@ -56,12 +55,17 @@ public class VLCPlayerWindow extends SimpleVLCPlayer {
 
         getControls().getChildren().add(topbar);
 
-        setOnKeyPressed(e -> {
-            if (KeyCode.ESCAPE.equals(e.getCode())) {
-                exit();
+        sceneProperty().addListener((s, o, n) -> {
+            if (n != null) {
+                requestFocus();
             }
         });
 
+        /*setOnKeyPressed(e -> {
+         if (KeyCode.ESCAPE.equals(e.getCode())) {
+         exit();
+         }
+         });*/
         topbar.visibleProperty().bind(controlsVisibleProperty());
         topbar.opacityProperty().bind(controlsOpacityProperty());
     }
